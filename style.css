@@ -158,6 +158,12 @@ body {
     gap: 8px;
 }
 
+@media (max-width: 760px) {
+    .wrap {
+        background-image: url('mobile.png') !important;
+    }
+}
+
 .wrap {
     position: relative;
     min-height: 100vh;
@@ -214,6 +220,7 @@ body {
     .left {
         padding: 20px;
         border-radius: 16px;
+        background: rgba(0, 0, 0, 1);
     }
 }
 
@@ -371,12 +378,12 @@ h1 {
     }
     .wrap {
         --hero-offset-y: 60px;
-        padding-inline: 20px;
+        padding-inline: 8px;
         background-position: center top var(--hero-offset-y);
         background-position-x: center;
     }
     .hero {
-        padding-top: 18vh;
+        padding-top: 16vh;
     }
     .left {
         max-width: 100%;
@@ -392,5 +399,66 @@ h1 {
     .btn--hero {
         height: 60px;
         font-size: 16px;
+    }
+}
+
+/* ===== NAVBAR — Media queries ===== */
+
+@media (max-width: 480px) {
+    .bar-inner {
+        flex-direction: column;
+        gap: 12px; /* separa o título do contador */
+        text-align: center;
+    }
+
+    .count {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+
+    .chunk {
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .num {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    .label {
+        font-size: 14px;
+        color: #fff;
+        font-weight: 500;
+    }
+
+    .bar-title {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 760px) {
+    .bar {
+        background: rgba(0, 0, 0, 0.9) !important;
+    }
+}
+
+@media only screen and (max-width: 410px) {
+    .help {
+        display: none !important;
+    }
+}
+
+/* Alinhar a .help no mobile (≤ 880px) */
+@media (max-width: 880px) {
+    .help {
+        margin-left: -1px;
+    }
+    .help .mini {
+        /* garante centrinho visual do ícone */
+        flex-shrink: 0 !important;
     }
 }
