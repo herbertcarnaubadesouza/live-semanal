@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Live Semanal 100% Gratuita no YouTube</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <!-- Sticky countdown bar -->
+        <div class="bar">
+            <div class="bar-inner">
+                <div class="bar-title">A aula começa em…</div>
+                <div class="count" id="countdown">
+                    <div class="chunk">
+                        <span class="num" id="d">00</span>
+                        <span class="label">Dias</span>
+                    </div>
+                    <div class="chunk">
+                        <span class="num" id="h">00</span>
+                        <span class="label">Horas</span>
+                    </div>
+                    <div class="chunk">
+                        <span class="num" id="m">00</span>
+                        <span class="label">Minutos</span>
+                    </div>
+                    <div class="chunk">
+                        <span class="num" id="s">00</span>
+                        <span class="label">Segundos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="wrap">
+            <section class="hero">
+                <!-- Left -->
+                <div class="left">
+                    <div class="help">
+                        <span class="mini" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <!-- calendário simples -->
+                                <path
+                                    d="M7 2h2v2h6V2h2v2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V2Zm12 8H5v10h14V10Zm0-4H5v2h14V6Z"
+                                />
+                            </svg>
+                        </span>
+
+                        <span
+                            >Aprenda a programar <strong>AO VIVO</strong> e de
+                            graça.</span
+                        >
+                    </div>
+
+                    <h1>
+                        <span class="highlight">Live Semanal</span> e<br />
+                        <span class="accent">100% Gratuita</span><br />
+                        no <span class="yt">YouTube</span>
+                    </h1>
+
+                    <p class="sub">
+                        Aprenda programação do zero ao avançado, todas as
+                        semanas, em aulas práticas e ao vivo.
+                    </p>
+
+                    <form class="card" id="leadForm" novalidate>
+                        <div class="row">
+                            <input
+                                id="nome"
+                                class="in in--light"
+                                name="nome"
+                                type="text"
+                                placeholder="•  Digite seu primeiro nome"
+                                required
+                            />
+
+                            <input
+                                id="email"
+                                class="in in--light"
+                                name="email"
+                                type="email"
+                                placeholder="•  Digite seu email"
+                                required
+                            />
+
+                            <input
+                                id="tel"
+                                class="in in--light"
+                                name="telefone"
+                                type="tel"
+                                placeholder="•  (DDD)  +  Telefone"
+                                required
+                            />
+
+                            <button
+                                class="btn btn--hero"
+                                type="submit"
+                                id="cta"
+                            >
+                                <span class="cta-arrow">›</span>
+                                <span class="cta-text">Quero me inscrever</span>
+                                <img src="youtube.svg" />
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <script src="main.js"></script>
+    </body>
+</html>

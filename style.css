@@ -1,0 +1,396 @@
+:root {
+    --bg: #0b0b0d;
+    --bg-2: #101014;
+    --stroke: #26262c;
+    --text: #e7e7ea;
+    --muted: #a9a9b5;
+    --primary: #ef233c;
+    --primary-2: #b3001b;
+    --ring: rgba(239, 35, 60, 0.45);
+    --ok: #22c55e;
+
+    --hero-offset-y: 30px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+        Arial;
+    color: var(--text);
+    background-color: var(--bg);
+    overflow-x: hidden;
+}
+
+/* Badge/pílula do subtítulo */
+.help {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    width: max-content;
+    color: #f4f4f8;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.15px;
+
+    /* visual */
+    background: radial-gradient(
+            120% 120% at 0% 0%,
+            rgba(239, 35, 60, 0.22),
+            transparent 60%
+        ),
+        linear-gradient(180deg, rgba(239, 35, 60, 0.1), rgba(239, 35, 60, 0.06));
+    border: 1px solid rgba(239, 35, 60, 0.38);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 6px 22px rgba(239, 35, 60, 0.18);
+    backdrop-filter: saturate(120%) blur(2px);
+    -webkit-backdrop-filter: saturate(120%) blur(2px);
+    margin-bottom: 14px; /* dá um respiro do título */
+}
+
+.help strong {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+/* Caixinha do ícone à esquerda */
+.help .mini {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+
+    background: rgba(239, 35, 60, 0.18);
+    border: 1px solid rgba(239, 35, 60, 0.5);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 6px 18px rgba(239, 35, 60, 0.25);
+}
+
+/* Se usar um <img> ou <svg> dentro da .mini */
+.help .mini img,
+.help .mini svg {
+    width: 18px;
+    height: 18px;
+    color: #ff808c;
+    opacity: 0.95;
+}
+
+/* opcional: se NÃO for colocar ícone algum, deixa um pontinho */
+.help .mini:empty {
+    background: radial-gradient(
+                circle at 50% 50%,
+                rgba(239, 35, 60, 0.9) 0 30%,
+                transparent 32%
+            )
+            center/12px 12px no-repeat,
+        rgba(239, 35, 60, 0.18);
+}
+
+.bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: none;
+}
+.bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        rgba(239, 35, 60, 1),
+        rgba(239, 35, 60, 0.3) 50%,
+        rgba(239, 35, 60, 1)
+    );
+    box-shadow: 0 0 8px rgba(239, 35, 60, 0.6);
+}
+.bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.bar-title {
+    font-weight: 600;
+    color: #fff;
+    font-size: 24px;
+}
+.count {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-weight: 800;
+}
+.num {
+    font-size: 44px;
+    color: var(--primary);
+}
+.label {
+    font-size: 24px;
+    color: #fff;
+}
+.chunk {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.wrap {
+    position: relative;
+    min-height: 100vh;
+    background-image: url('hero.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right 0 top var(--hero-offset-y);
+    background-position-x: right;
+    background-position-y: calc(50% + var(--hero-offset-y));
+    padding-inline: 100px;
+}
+.hero {
+    max-width: 1440px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 15vh;
+    padding-bottom: 40px;
+}
+/* Left com fundo sutilmente mais escuro e vidro leve */
+.left {
+    position: relative;
+    max-width: 540px;
+    padding: 38px;
+    border-radius: 20px;
+
+    /* leve dark + um toque de vidro */
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: saturate(120%) blur(2px);
+    -webkit-backdrop-filter: saturate(120%) blur(2px);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* brilho bem sutil vermelho no canto superior esquerdo (opcional) */
+.left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        60% 50% at 0% 0%,
+        rgba(239, 35, 60, 0.08),
+        transparent 60%
+    );
+    pointer-events: none;
+}
+
+/* Mobile: reduz um pouco o padding/arredondamento */
+@media (max-width: 880px) {
+    .left {
+        padding: 20px;
+        border-radius: 16px;
+    }
+}
+
+/* ============= TÍTULOS / TEXTOS ============= */
+h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.5px;
+    margin: 0 0 16px;
+    font-weight: 700; /* branco um pouco mais leve */
+}
+.accent {
+    color: var(--primary);
+    font-weight: 800;
+} /* vermelho encorpado */
+.yt {
+    color: #ff2d55;
+}
+.sub {
+    color: var(--muted);
+    max-width: 56ch;
+    margin: 0 0 18px;
+}
+
+/* ============= FORM (igual à referência) ============= */
+.card {
+    margin-top: 24px;
+    background: transparent;
+    padding: 0;
+    border: 0;
+}
+.card .row {
+    display: grid;
+    gap: 12px;
+}
+
+.in {
+    width: 100%;
+    height: 56px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    padding: 0 18px;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.in--light {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25) inset, 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+.in--light::placeholder {
+    color: rgba(255, 255, 255, 0.85);
+} /* usa '•' no placeholder do HTML */
+.in--light:focus {
+    border-color: rgba(239, 35, 60, 0.65);
+    box-shadow: 0 0 0 4px rgba(239, 35, 60, 0.18),
+        0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Botão grande com seta + chip YouTube à direita */
+.btn {
+    border: 0;
+    cursor: pointer;
+}
+.btn--hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding-inline: 40px;
+    height: 64px;
+    margin-top: 14px;
+    border-radius: 12px;
+    justify-content: space-between;
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    background: linear-gradient(180deg, var(--primary), var(--primary-2));
+    box-shadow: 0 14px 28px rgba(239, 35, 60, 0.28),
+        inset 0 -4px 0 rgba(0, 0, 0, 0.25);
+    transition: filter 0.15s, transform 0.05s;
+}
+.btn--hero:hover {
+    filter: brightness(1.05);
+}
+.btn--hero:active {
+    transform: translateY(1px);
+}
+.btn--hero .cta-arrow {
+    font-size: 26px;
+    line-height: 1;
+    margin-left: 14px;
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+.btn--hero .cta-text {
+    margin-left: 4px;
+}
+.btn--hero .yt-chip {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+/* Aviso de privacidade */
+.safe {
+    color: #dcdce6;
+    font-size: 14px;
+    line-height: 1.45;
+    margin-top: 10px;
+}
+.safe a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Tags informativas (se usar) */
+.tiny-badges {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.tiny {
+    background: #141419;
+    color: #d7d7e2;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--stroke);
+}
+
+/* ============= RESPONSIVO ============= */
+@media (max-width: 1200px) {
+    .wrap {
+        padding-inline: 40px;
+    }
+}
+@media (max-width: 880px) {
+    .bar-title {
+        font-size: 18px;
+    }
+    .num {
+        font-size: 34px;
+    }
+    .label {
+        font-size: 16px;
+    }
+    .wrap {
+        --hero-offset-y: 60px;
+        padding-inline: 20px;
+        background-position: center top var(--hero-offset-y);
+        background-position-x: center;
+    }
+    .hero {
+        padding-top: 18vh;
+    }
+    .left {
+        max-width: 100%;
+    }
+}
+@media (max-width: 480px) {
+    .num {
+        font-size: 28px;
+    }
+    .label {
+        font-size: 14px;
+    }
+    .btn--hero {
+        height: 60px;
+        font-size: 16px;
+    }
+}
