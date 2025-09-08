@@ -1,106 +1,167 @@
-// ===== Countdown para toda QUARTA às 20:00 (BRT) =====
-const BRT_TZ = 'America/Sao_Paulo';
-const MS = { sec: 1000, min: 60_000, hour: 3_600_000, day: 86_400_000 };
+document.addEventListener('DOMContentLoaded', function () {
+    /* =======================
+       COUNTDOWN: toda QUARTA às 20:00 (BRT)
+       ======================= */
+    const $d = document.getElementById('d');
+    const $h = document.getElementById('h');
+    const $m = document.getElementById('m');
+    const $s = document.getElementById('s');
 
-const $d = document.getElementById('d');
-const $h = document.getElementById('h');
-const $m = document.getElementById('m');
-const $s = document.getElementById('s');
+    // Se a barra não existir na página, não faz nada
+    if ($d && $h && $m && $s) {
+        const MS = { sec: 1000, min: 60_000, hour: 3_600_000, day: 86_400_000 };
+        const BRT_TZ = 'America/Sao_Paulo';
 
-function pad(n) {
-    return String(n).padStart(2, '0');
-}
+        function pad(n) {
+            return String(n).padStart(2, '0');
+        }
 
-// Retorna partes da data "agora" em São Paulo
-function brtParts(d = new Date()) {
-    const parts = new Intl.DateTimeFormat('en-CA', {
-        timeZone: BRT_TZ,
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-        weekday: 'short',
-    })
-        .formatToParts(d)
-        .reduce((acc, p) => ((acc[p.type] = p.value), acc), {});
-    return parts; // {year, month, day, hour, minute, second, weekday}
-}
+        // Partes "agora" em São Paulo (seguro em todos os browsers modernos)
+        function brtParts(d = new Date()) {
+            const parts = new Intl.DateTimeFormat('en-CA', {
+                timeZone: BRT_TZ,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+                weekday: 'short',
+            })
+                .formatToParts(d)
+                .reduce((acc, p) => ((acc[p.type] = p.value), acc), {});
+            return parts; // {year,month,day,hour,minute,second,weekday}
+        }
 
-// Calcula o próximo instante de QUARTA 20:00 em São Paulo
-function nextWednesday20BRT() {
-    const wdIndex = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-    const p = brtParts(); // agora em BRT
+        function nextWednesday20BRT() {
+            const wdIndex = {
+                Sun: 0,
+                Mon: 1,
+                Tue: 2,
+                Wed: 3,
+                Thu: 4,
+                Fri: 5,
+                Sat: 6,
+            };
+            const p = brtParts();
 
-    const todayIdx = wdIndex[p.weekday];
-    let daysAhead = (3 - todayIdx + 7) % 7; // 3 = Wednesday
+            const todayIdx = wdIndex[p.weekday]; // índice do dia em BRT
+            let daysAhead = (3 - todayIdx + 7) % 7; // 3 = Wednesday
 
-    // Se hoje já passou das 20:00 em BRT e hoje é quarta, empurra pra próxima semana
-    const passed20 =
-        Number(p.hour) > 20 ||
-        (Number(p.hour) === 20 &&
-            (Number(p.minute) > 0 || Number(p.second) > 0));
-    if (todayIdx === 3 && passed20) daysAhead = 7;
+            // já passou das 20:00 da própria quarta? então empurra pra próxima
+            const passed20 =
+                Number(p.hour) > 20 ||
+                (Number(p.hour) === 20 &&
+                    (Number(p.minute) > 0 || Number(p.second) > 0));
+            if (todayIdx === 3 && passed20) daysAhead = 7;
 
-    // Monta data base (meia-noite BRT do "hoje") com offset fixo -03:00
-    // (Brasil sem horário de verão desde 2019)
-    const baseISO = `${p.year}-${p.month}-${p.day}T00:00:00-03:00`;
-    const base = new Date(baseISO);
+            // meia-noite BRT de hoje, com offset fixo -03:00 (sem DST no BR)
+            const baseISO = `${p.year}-${p.month}-${p.day}T00:00:00-03:00`;
+            const base = new Date(baseISO);
 
-    // Alvo: base + daysAhead + 20h
-    const targetMs = base.getTime() + daysAhead * MS.day + 20 * MS.hour;
-    return new Date(targetMs);
-}
+            const targetMs = base.getTime() + daysAhead * MS.day + 20 * MS.hour;
+            return new Date(targetMs);
+        }
 
-let target = nextWednesday20BRT();
+        let target = nextWednesday20BRT();
 
-function tick() {
-    let diff = target - new Date();
-    if (diff <= 0) {
-        // Já chegou/virou: recalcula para a próxima quarta 20:00
-        target = nextWednesday20BRT();
-        diff = target - new Date();
+        function tick() {
+            let diff = target - new Date();
+            if (diff <= 0) {
+                // chegou? recalcula para a próxima quarta
+                target = nextWednesday20BRT();
+                diff = target - new Date();
+            }
+            const days = Math.floor(diff / MS.day);
+            const hours = Math.floor((diff % MS.day) / MS.hour);
+            const mins = Math.floor((diff % MS.hour) / MS.min);
+            const secs = Math.floor((diff % MS.min) / MS.sec);
+
+            $d.textContent = pad(days);
+            $h.textContent = pad(hours);
+            $m.textContent = pad(mins);
+            $s.textContent = pad(secs);
+        }
+
+        tick();
+        setInterval(tick, 1000);
     }
 
-    const days = Math.floor(diff / MS.day);
-    const hours = Math.floor((diff % MS.day) / MS.hour);
-    const mins = Math.floor((diff % MS.hour) / MS.min);
-    const secs = Math.floor((diff % MS.min) / MS.sec);
+    /* =======================
+       FORM: envio + redirect
+       ======================= */
+    var form = document.getElementById('leadForm');
+    var btn = document.getElementById('cta');
 
-    $d.textContent = pad(days);
-    $h.textContent = pad(hours);
-    $m.textContent = pad(mins);
-    $s.textContent = pad(secs);
-}
+    var ENDPOINT = 'https://cbs.herbertcarnauba.com.br/api/leads'; // sua API
+    var WHATSAPP_URL = 'https://chat.whatsapp.com/SEU_GRUPO'; // seu link
 
-tick();
-setInterval(tick, 1000);
+    function toParams(obj) {
+        var params = new URLSearchParams();
+        for (var k in obj) {
+            if (
+                Object.prototype.hasOwnProperty.call(obj, k) &&
+                obj[k] != null
+            ) {
+                params.append(k, String(obj[k]));
+            }
+        }
+        return params.toString();
+    }
 
-// ===== Máscara de telefone BR simples =====
-const tel = document.getElementById('tel');
-if (tel) {
-    tel.addEventListener('input', (e) => {
-        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-        const isNine = v.length > 10;
-        if (v.length >= 2) v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
-        if (v.length >= 10 && !isNine)
-            v = v.replace(/(\(\d{2}\)\s)(\d{4})(\d{0,4})/, '$1$2-$3');
-        if (v.length >= 11 && isNine)
-            v = v.replace(/(\(\d{2}\)\s)(\d{5})(\d{0,4})/, '$1$2-$3');
-        e.target.value = v;
-    });
-}
+    if (!form) return;
 
-// ===== Validação básica do formulário =====
-const form = document.getElementById('leadForm');
-if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
-        // Aqui você pode integrar com seu endpoint:
-        // fetch('/api/lead', { method: 'POST', body: new FormData(form) })
-        alert('Inscrição realizada! Enviaremos o link por e-mail/WhatsApp.');
-        form.reset();
+
+        var nomeEl = document.getElementById('nome');
+        var emailEl = document.getElementById('email');
+        var telEl = document.getElementById('tel');
+
+        var nome = nomeEl ? (nomeEl.value || '').trim() : '';
+        var email = emailEl ? (emailEl.value || '').trim() : '';
+        var telefone = telEl ? (telEl.value || '').trim() : '';
+
+        if (!nome || !email || !telefone) {
+            alert('Preencha nome, email e telefone.');
+            return;
+        }
+
+        if (btn) {
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+        }
+
+        fetch(ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nome: nome,
+                email: email,
+                telefone: telefone,
+                origem: 'landing-live',
+            }),
+        })
+            .then(function (resp) {
+                var qs = toParams({
+                    g: WHATSAPP_URL,
+                    nome,
+                    email,
+                    telefone,
+                    saved: resp && resp.ok ? '1' : '0',
+                });
+                window.location.href = 'pendente/index.html?' + qs;
+            })
+            .catch(function () {
+                var qs = toParams({
+                    g: WHATSAPP_URL,
+                    nome,
+                    email,
+                    telefone,
+                    saved: '0',
+                });
+                window.location.href = 'pendente/index.html?' + qs;
+            });
     });
-}
+});
